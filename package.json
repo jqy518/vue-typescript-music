@@ -16,9 +16,10 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.1.1",
-    "@vue/cli-plugin-eslint": "^3.1.1",
+    "@vue/cli-plugin-eslint": "^3.1.5",
     "@vue/cli-plugin-typescript": "^3.1.1",
     "@vue/cli-service": "^3.1.1",
+    "@vue/eslint-config-standard": "^4.0.0",
     "@vue/eslint-config-typescript": "^3.1.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
@@ -36,7 +37,8 @@
     "extends": [
       "plugin:vue/essential",
       "eslint:recommended",
-      "@vue/typescript"
+      "@vue/typescript",
+      "@vue/standard"
     ],
     "rules": {},
     "parserOptions": {

@@ -1,5 +1,23 @@
 module.exports = {
-    'no-mixed-spaces-and-tabs': 0,
-    'indent': ["off", "tab"],
-    'no-trailing-spaces': 0
+    root: true,
+    env: {
+      node: true
+    },
+    'extends': [
+      'plugin:vue/essential',
+      '@vue/standard',
+      '@vue/typescript'
+    ],
+    rules: {
+      'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+      'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+      "no-mixed-spaces-and-tabs": 0,
+      "indent": ["off", "tab"],
+      "no-tab": 0,
+      "no-trailing-spaces": 0
+    },
+    parserOptions: {
+      parser: 'typescript-eslint-parser'
+    }
 }
+  
