@@ -6,10 +6,16 @@
             <li id="signal" ><i class="icon-signal"></i></li>
         </ul>
          <div id="playButn" @click="palyAndPause" class="clock">    
-            <div class="left" ><div :style="pLeftCss"></div></div>
-            <div class="right"><div :style="pRightCss"></div></div>
+            <div class="left" ><div :style="pRightCss"></div></div>
+            <div class="right"><div :style="pLeftCss"></div></div>
                 <div class="progress">
-                    <i id="p_icon" class="iconfont icon-bofang101"></i>
+                    <i id="p_icon" class="iconfont" 
+                    :class="{
+                        'icon-bofang101':!working&&!needload,
+                        'icon-zanting101':working&&!needload,
+                        'icon-loading':needload
+                        }">
+                    </i>
                     <span class="pronum">{{pronum}}</span>
                 </div>
             </div>
@@ -30,11 +36,13 @@ export default class playBar extends Vue {
     @Prop(String)
     url!:string
     pronum:string = "00:00"
-    pLeftCss:any = {}
-    pRightCss:any = {}
-    audioTotalTime:number = 0
-    audioObj:any = null
-    working:boolean = false
+    pLeftCss:any = {} // 进度条样式
+    pRightCss:any = {} // 进度条样式
+    audioTotalTime:number = 0 // 总时长
+    progessIntervalID:any = null // 进度时间刷新定时器
+    needload:boolean = true // 是否需要加载
+    audioObj:any = null // 播放器对象
+    working:boolean = false // 是否在播放
 
     mounted () {
         this.audioObj = this.$refs.playerAudio
@@ -46,21 +54,32 @@ export default class playBar extends Vue {
        this.audioObj.addEventListener('ended', this.songEnd.bind(this), false)
    }
    songEnd ():void {
-
+       window.clearInterval(this.progessIntervalID)
+        this.progessIntervalID = null
+        this.pronum = '00:00'
+        this.pLeftCss = {} 
+        this.pRightCss = {} 
+        this.audioTotalTime = 0 
+        this.working = false
    }
   palyAndPause ():void {
         if (!this.working) {
             this.working = true
-            this.audioObj.load()
+            if (this.needload) {
+                this.audioObj.load()
+            }
             this.audioObj.play()
+            this.progessIntervalID = window.setInterval(this.updateProgress.bind(this), 500)
         } else {
             this.working = false
             this.audioObj.pause()
+            window.clearInterval(this.progessIntervalID)
+            this.progessIntervalID = null
         }
     }
   initPlay ():void {
       this.audioTotalTime = this.audioObj.duration
-      window.setInterval(this.updateProgress.bind(this), 500)
+      this.needload = false
   }
   updateProgress ():void {
         var curTime = this.audioObj.currentTime*1e3|0
@@ -79,16 +98,17 @@ export default class playBar extends Vue {
       let Rdeg = num > n ? n : num
       let Ldeg = num > n ? num - n : 0
       this.pLeftCss = {
-          'transform': `rotateZ(${(360/(2*n)*Rdeg-180)})deg)`
+          'transform': `rotateZ(${(360/(2*n)*Rdeg-180)}deg)`
       }
       this.pRightCss = {
-          'transform': `rotateZ(${(360/(2*n)*Ldeg-180)})deg)`
+          'transform': `rotateZ(${(360/(2*n)*Ldeg-180)}deg)`
       }
   }
-  @Watch('working')
-  wWorking (nval:boolean, oval:boolean) {
+  @Watch('url')
+  urlChange (nval:string, oval:string) {
       if (nval) {
-
+          this.songEnd() // 结束当前播放；
+          this.needload = true
       }
   }
 }

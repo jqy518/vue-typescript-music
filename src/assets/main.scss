@@ -63,7 +63,7 @@ body {
 }
 .clock{position:absolute; left: ($centerbox_width - $playbtn_size)/2; top: 10px; width: #{$playbtn_size}; height: #{$playbtn_size}; display: inline-block; background: #fff; background-color:rgba(225,225,225,0.5); border-radius: 50%;}
 .progress{position: absolute; cursor: pointer; color:#fff; width: #{$playbtn_psize}; height:#{$playbtn_psize}; background-color: #000621; border-radius: 50%; left: ($playbtn_size - $playbtn_psize)/2; top:  ($playbtn_size - $playbtn_psize)/2; text-align: center;}
-.progress i{ font-size:2em; display:block; margin-top:25px; margin-left:5px; opacity: $btn_opacity; }
+.progress i{ font-size:2em; display:block; margin-top:25px; opacity: $btn_opacity; }
 .progress span{ font: 10px/16px Arial;}
 .progress:hover i{ color:$progress_color;}
 .left,.right{width: #{$playbtn_size/2};height: #{$playbtn_size};overflow: hidden; position: relative; float: left;}
