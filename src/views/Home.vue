@@ -12,9 +12,9 @@ import PlayBar from '@/components/PlayBar.vue'
 
 export default {
   name: 'home',
-  data(){
+  data () {
     return {
-      url:'http://fs.open.kugou.com/fc8b84dd590665bda56d9bf862fdf072/5827b693/G072/M02/06/07/KJQEAFdUViWAPaBSAEflpT31pcw807.mp3'
+      url: 'http://fs.open.kugou.com/fc8b84dd590665bda56d9bf862fdf072/5827b693/G072/M02/06/07/KJQEAFdUViWAPaBSAEflpT31pcw807.mp3'
     }
   },
   components: {

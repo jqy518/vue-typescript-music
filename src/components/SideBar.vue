@@ -1,12 +1,13 @@
 <template>
   <div class="siderBox">
     <div class="searchBox">
-      <input id="keyword" type="text" name="keyword">
-      <button type="button" id="searchBtn"><i class="iconfont icon-fangdajing3"></i></button>
+      <input id="keyword" type="text" v-model="keywords">
+      <button type="button" id="searchBtn" @click="seachHandle"><i class="iconfont icon-fangdajing3"></i></button>
     </div>
     <div class="listContainer">      
       <ul class="ul_list searchList">
-        <li class="nomatch"><i class="icon-search"></i>搜一搜....</li>
+        <li class="nomatch" v-show="songData.recordcount == 0"><i class="icon-search"></i>搜一搜....</li>
+        <li v-for="(item,i) in songData.data" :key="i" @click="playSong(item)"><span>{{item.filename}}</span></li>
       </ul>
       <ul class="ul_list loveList">
         <li class="liactive"><span>天之大-韩红</span></li>
@@ -24,11 +25,28 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-
+import { getList } from '../api'
 @Component
 export default class SideBar extends Vue {
   @Prop() private msg!: string;
-  name:string = "zhangsan" 
+  keywords:string = "" 
+  private loading:boolean = false
+  private songData:StoreState.SongList = {
+    status:0,
+    recordcount:0,
+    data:[]
+  }
+  seachHandle () {
+    this.loading = true
+    getList(this.keywords).then((data) => {
+      this.songData = data as StoreState.SongList
+    }).catch((err:Error) => {
+      console.log(err)
+    })
+  }
+  playSong (song:StoreState.ListItem) {
+
+  }
 }
 </script>
 
