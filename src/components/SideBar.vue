@@ -7,7 +7,7 @@
     <div class="listContainer">      
       <ul class="ul_list searchList">
         <li class="nomatch" v-show="songData.recordcount == 0"><i class="icon-search"></i>搜一搜....</li>
-        <li v-for="(item,i) in songData.data" :key="i" @click="playSong(item)"><span>{{item.filename}}</span></li>
+        <li :class="currHash == item.hash ? 'liactive' : ''" v-for="(item,i) in songData.data" :key="i" @click="playSong(item)"><span>{{item.filename}}</span></li>
       </ul>
       <ul class="ul_list loveList">
         <li class="liactive"><span>天之大-韩红</span></li>
@@ -25,12 +25,23 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import { getList } from '../api'
+import { getList, getSongInfo } from '../api'
 @Component
 export default class SideBar extends Vue {
   @Prop() private msg!: string;
-  keywords:string = "" 
+  private keywords:string = "" 
+  private currHash:string = ""
   private loading:boolean = false
+  private currSongInfo:StoreState.SongInfo = {
+    audio_name:'',
+    author_name: '',
+    filesize: 0,
+    hash: '',
+    img:'',
+    play_url:'',
+    lyrics:'',
+    timelength: 0
+  }
   private songData:StoreState.SongList = {
     status:0,
     recordcount:0,
@@ -41,11 +52,16 @@ export default class SideBar extends Vue {
     getList(this.keywords).then((data) => {
       this.songData = data as StoreState.SongList
     }).catch((err:Error) => {
-      console.log(err)
+      console.error(err)
     })
   }
   playSong (song:StoreState.ListItem) {
-
+    this.currHash = song.hash
+    getSongInfo(song.hash).then((data) => {
+      this.currSongInfo = data as StoreState.SongInfo
+    }).catch((err:Error) => {
+      console.error(err)
+    })
   }
 }
 </script>

@@ -17,4 +17,14 @@ declare namespace  StoreState {
         data:ListItem[],
         [propName: string]: any
     }
+    export interface SongInfo {
+        audio_name:string,
+        author_name: string,
+        filesize: number,
+        hash: string,
+        img:string,
+        play_url:string,
+        lyrics:string,
+        timelength: number
+    }
 }
