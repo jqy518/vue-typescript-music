@@ -24,8 +24,8 @@ export function getList (keyword:string) {
     export function getSongInfo (hash:string) {    
         return new Promise((resolve, reject) => {
             let params = {
-                r:'play/getdata',
-                hash:hash
+                r: 'play/getdata',
+                hash: hash
             }
 
            jsonp(`http://www.kugou.com/yy/index.php?${qs.stringify(params)}`, function (err, data) { 
