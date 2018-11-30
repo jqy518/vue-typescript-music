@@ -58,7 +58,8 @@ export default class SideBar extends Vue {
   playSong (song:StoreState.ListItem) {
     this.currHash = song.hash
     getSongInfo(song.hash).then((data) => {
-      this.currSongInfo = data as StoreState.SongInfo
+      let song = data
+      this.currSongInfo = song as StoreState.SongInfo
       this.$store.commit('SET_SONG', this.currSongInfo)
     }).catch((err:Error) => {
       console.error(err)

@@ -1,25 +1,20 @@
 <template>
   <div class="home">
-    <side-bar />
-    <play-bar :url="url" />
+    <side-bar :song="songInfo" />
+    <play-bar :song="songInfo" />
   </div>
 </template>
 
-<script>
-// @ is an alias to /src
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
 import SideBar from '@/components/SideBar.vue'
 import PlayBar from '@/components/PlayBar.vue'
-
-export default {
-  name: 'home',
-  data () {
-    return {
-      url: 'http://fs.open.kugou.com/fc8b84dd590665bda56d9bf862fdf072/5827b693/G072/M02/06/07/KJQEAFdUViWAPaBSAEflpT31pcw807.mp3'
-    }
-  },
-  components: {
-    SideBar,
-    PlayBar
+@Component({
+  components: { SideBar, PlayBar }
+})
+export default class Home extends Vue {
+  private get songInfo ():StoreState.SongInfo {
+    return this.$store.state.song
   }
 }
 </script>

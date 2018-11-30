@@ -33,9 +33,10 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 
 @Component
 export default class playBar extends Vue {
-    @Prop(String)
-    url!:string
+    @Prop(Object)
+    song!:StoreState.SongInfo
     pronum:string = "00:00"
+    url:string = ""
     pLeftCss:any = {} // 进度条样式
     pRightCss:any = {} // 进度条样式
     audioTotalTime:number = 0 // 总时长
@@ -54,6 +55,7 @@ export default class playBar extends Vue {
        this.audioObj.addEventListener('ended', this.songEnd.bind(this), false)
    }
    songEnd ():void {
+       this.audioObj.pause()
        window.clearInterval(this.progessIntervalID)
         this.progessIntervalID = null
         this.pronum = '00:00'
@@ -109,8 +111,13 @@ export default class playBar extends Vue {
       if (nval) {
           this.songEnd() // 结束当前播放；
           this.needload = true
+          this.audioObj.load()
       }
   }
-}
+  @Watch('song',{ deep: true})
+  songChange(nval:StoreState.SongInfo){
+      this.url = nval.play_url
+  }
 
+}
 </script>

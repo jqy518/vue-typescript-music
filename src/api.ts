@@ -32,7 +32,7 @@ export function getList (keyword:string) {
             if (err) {
                     throw err
                 } else {
-                    resolve(data)
+                    resolve(data.data)
                 }
            }) 
         })
