@@ -79,6 +79,13 @@ body {
 .nextBtn{ top: 40px; right:0px;}
 .typeBtn{ top: 40px; right:-100px;}
 .prevBtn:hover,.nextBtn:hover{color:$progress_color;}
+.disableBtn {
+  color:rgba($color: #fff, $alpha: .2);
+  cursor: not-allowed;
+}
+.disableBtn:hover {
+  color:rgba($color: #fff, $alpha: .2);
+}
 
 .visBox{ width: 500px; height: 350px; position: absolute; opacity: 0.5}
 .visualizerBlist{ width: 80px; height: 20px; position: absolute; top: -20px; left: 105px;  @include flex(row,space-around,center);}
@@ -169,9 +176,9 @@ body {
       border: none;
     }
     .liactive span:before{
-      font-family:FontAwesome;
+      font-family: "iconfont";
       margin-right:10px;
-      content:"\f01d";
+      content: "\e662";
     }
     .nomatch{
        line-height: 200px; color: #999; text-align: center;

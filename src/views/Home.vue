@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <side-bar :song="songInfo" />
-    <play-bar :song="songInfo" />
+    <side-bar :list-info="listInfo" />
+    <play-bar :song="songInfo" :list-info="listInfo" />
   </div>
 </template>
 
@@ -15,6 +15,9 @@ import PlayBar from '@/components/PlayBar.vue'
 export default class Home extends Vue {
   private get songInfo ():StoreState.SongInfo {
     return this.$store.state.song
+  }
+  private get listInfo ():StoreState.ListInfo {
+    return this.$store.state.listInfo
   }
 }
 </script>

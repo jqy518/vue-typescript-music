@@ -19,8 +19,15 @@
                     <span class="pronum">{{pronum}}</span>
                 </div>
             </div>
-            <i id="prevButn" class="prevBtn iconfont icon-shangyiqu101"></i>
-            <i id="nextButn" class="nextBtn iconfont icon-xiayiqu101"></i>
+            <i id="prevButn" 
+            @click="preHandle" 
+            class="prevBtn iconfont icon-shangyiqu101" 
+            :class="this.listInfo.index == 0 ? 'disableBtn':''"></i>
+            <i id="nextButn" 
+             @click="nextHandle" 
+             class="nextBtn iconfont icon-xiayiqu101"
+             :class="nonext ? 'disableBtn':''"
+             ></i>
             <i id="typeButn" class="typeBtn iconfont icon-suijibofang01"></i>
     </div>
     <audio ref='playerAudio' preload='auto'>
@@ -35,6 +42,8 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 export default class playBar extends Vue {
     @Prop(Object)
     song!:StoreState.SongInfo
+    @Prop(Object)
+    listInfo!:StoreState.ListInfo
     pronum:string = "00:00"
     url:string = ""
     pLeftCss:any = {} // 进度条样式
@@ -82,6 +91,7 @@ export default class playBar extends Vue {
   initPlay ():void {
       this.audioTotalTime = this.audioObj.duration
       this.needload = false
+      this.palyAndPause()
   }
   updateProgress ():void {
         var curTime = this.audioObj.currentTime*1e3|0
@@ -106,6 +116,23 @@ export default class playBar extends Vue {
           'transform': `rotateZ(${(360/(2*n)*Ldeg-180)}deg)`
       }
   }
+  preHandle () {
+      let index = this.listInfo.index
+      let total = this.listInfo.total
+      if (total!==0 && index!==0) {
+          this.$store.commit('SET_LIST_INFO_INDEX', index -1)
+      }
+  }
+  nextHandle () {
+      let index = this.listInfo.index
+      let total = this.listInfo.total
+      if (index + 1 < total) {
+          this.$store.commit('SET_LIST_INFO_INDEX', index + 1)
+      }
+  }
+  private get nonext () {
+      return this.listInfo.total === 0 || this.listInfo.total === this.listInfo.index + 1
+  }
   @Watch('url')
   urlChange (nval:string, oval:string) {
       if (nval) {
@@ -114,10 +141,9 @@ export default class playBar extends Vue {
           this.audioObj.load()
       }
   }
-  @Watch('song',{ deep: true})
-  songChange(nval:StoreState.SongInfo){
+  @Watch('song', { deep: true})
+  songChange (nval:StoreState.SongInfo) {
       this.url = nval.play_url
   }
-
 }
 </script>

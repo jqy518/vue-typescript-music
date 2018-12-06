@@ -27,4 +27,8 @@ declare namespace  StoreState {
         lyrics:string,
         timelength: number
     }
+    export interface ListInfo {
+        index:number,
+        total:number
+    }
 }

@@ -1,32 +1,43 @@
 import Vue from 'vue'
-import Vuex,{ MutationTree } from 'vuex'
+import Vuex, { MutationTree } from 'vuex'
 
 Vue.use(Vuex)
 
 export interface IState {
-  song:StoreState.SongInfo
+  song:StoreState.SongInfo,
+  listInfo:StoreState.ListInfo
 }
 
 const initState:IState = {
-  song :{
-    audio_name:'',
+  song: {
+    audio_name: '',
     author_name: '',
     filesize: 0,
     hash: '',
-    img:'',
-    play_url:'',
-    lyrics:'',
+    img: '',
+    play_url: '',
+    lyrics: '',
     timelength: 0
+  },
+  listInfo: {
+    index: 0,
+    total: 0
   }
 }
 
 const mutations:MutationTree<IState> = {
   'SET_SONG' (state:IState, data:StoreState.SongInfo) {
     state.song = data
+  },
+  'SET_LIST_INFO' (state:IState, data:StoreState.ListInfo) {
+    state.listInfo = data
+  },
+  'SET_LIST_INFO_INDEX' (state:IState, data:number) {
+    state.listInfo.index = data
   }
 }
 export default new Vuex.Store({
-  state:initState,
+  state: initState,
   mutations: mutations,
   actions: {
 

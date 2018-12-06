@@ -7,7 +7,7 @@
     <div class="listContainer">      
       <ul class="ul_list searchList">
         <li class="nomatch" v-show="songData.recordcount == 0"><i class="icon-search"></i>搜一搜....</li>
-        <li :class="currHash == item.hash ? 'liactive' : ''" v-for="(item,i) in songData.data" :key="i" @click="playSong(item)"><span>{{item.filename}}</span></li>
+        <li :class="currHash == item.hash ? 'liactive' : ''" v-for="(item,i) in songData.data" :key="i" @click="playSong(item,i)"><span>{{item.filename}}</span></li>
       </ul>
       <ul class="ul_list loveList">
         <li class="liactive"><span>天之大-韩红</span></li>
@@ -24,13 +24,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { getList, getSongInfo } from '../api'
 @Component
 export default class SideBar extends Vue {
-  @Prop() private msg!: string;
+  @Prop(Object)
+  listInfo!:StoreState.ListInfo
   private keywords:string = "" 
   private currHash:string = ""
+  private songIndex:number = 0
   private loading:boolean = false
   private currSongInfo:StoreState.SongInfo = {
     audio_name:'',
@@ -51,19 +53,33 @@ export default class SideBar extends Vue {
     this.loading = true
     getList(this.keywords).then((data) => {
       this.songData = data as StoreState.SongList
+      let listInfo:StoreState.ListInfo = {
+        index: 0,
+        total: this.songData.data.length
+      }
+
+      this.$store.commit('SET_LIST_INFO', listInfo)
     }).catch((err:Error) => {
       console.error(err)
     })
   }
-  playSong (song:StoreState.ListItem) {
+  playSong (song:StoreState.ListItem, index:number) {
     this.currHash = song.hash
+    this.songIndex = index
     getSongInfo(song.hash).then((data) => {
       let song = data
       this.currSongInfo = song as StoreState.SongInfo
       this.$store.commit('SET_SONG', this.currSongInfo)
+      this.$store.commit('SET_LIST_INFO_INDEX', index)
     }).catch((err:Error) => {
       console.error(err)
     })
+  }
+  @Watch('listInfo', {deep:true}) 
+  listInfoChange (nval:StoreState.ListInfo) {
+    if (nval.index !== this.songIndex) {
+      this.playSong(this.songData.data[nval.index], nval.index)
+    }
   }
 }
 </script>
