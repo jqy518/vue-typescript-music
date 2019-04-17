@@ -12,8 +12,8 @@
       <ul v-if="datajson.arrLyric.length == 0">
         <li>....暂无歌词....</li>
       </ul>
-      <ul v-else>
-        <li v-for="(item,index) in datajson.arrLyric" :key="index">{{item}}</li>
+      <ul :style="{top: (-(currIndex-2)*25) + 'px'}" v-else>
+        <li :class="{cli:currIndex-1===index}" v-for="(item,index) in datajson.arrLyric" :key="index">{{item}}</li>
       </ul>
     </div> 
   </div>
@@ -36,6 +36,7 @@ export default class LrcBox extends Vue {
     arrLyric: [],
     arrLyricTime: []
   }
+  currIndex:number = 0
   init (song:StoreState.SongInfo) {
     this.setLrc(song.lyrics)
   }
@@ -77,9 +78,24 @@ export default class LrcBox extends Vue {
             return 0
         }
     }
+  getCurrItem(){
+    let second = ( this.currTime / 1000 ).toFixed(2)
+    let arrs = this.datajson.arrLyricTime
+    for(let i = 0; i<arrs.length;i++){
+      let itemArr = arrs[i].split('|')
+      if(Number(itemArr[1]) >= Number(second)){
+        this.currIndex = Number(itemArr[0])
+        break;
+      }
+    }
+  }
   @Watch('song')
   songChange (nval:StoreState.SongInfo) {
     this.init(nval)
+  }
+  @Watch('currTime')
+  timeChange (nval:number,oval:number){
+    this.getCurrItem()
   }
 }
 </script>

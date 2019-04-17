@@ -99,6 +99,7 @@ export default class playBar extends Vue {
         var progess = curTime / this.audioTotalTime * 0.1
         this.setprogress(progess, 50)
         this.pronum = this.getFormatTime(curTime / 1e3)
+        this.$store.commit('SET_CURR_TIME',curTime)
   }
   getFormatTime (time:number):string {
     let min = '00' + (time / 60 | 0)
@@ -109,7 +110,7 @@ export default class playBar extends Vue {
   setprogress (num:number, n:number):void {
       let Rdeg = num > n ? n : num
       let Ldeg = num > n ? num - n : 0
-      this.pLeftCss = {
+      this.pLeftCss = { 
           'transform': `rotateZ(${(360/(2*n)*Rdeg-180)}deg)`
       }
       this.pRightCss = {
@@ -120,7 +121,7 @@ export default class playBar extends Vue {
       let index = this.listInfo.index
       let total = this.listInfo.total
       if (total!==0 && index!==0) {
-          this.$store.commit('SET_LIST_INFO_INDEX', index -1)
+          this.$store.commit('SET_LIST_INFO_INDEX', index - 1)
       }
   }
   nextHandle () {
@@ -141,7 +142,7 @@ export default class playBar extends Vue {
           this.audioObj.load()
       }
   }
-  @Watch('song', { deep: true})
+  @Watch('song', { deep: true })
   songChange (nval:StoreState.SongInfo) {
       this.url = nval.play_url
   }

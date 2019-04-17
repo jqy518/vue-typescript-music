@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 export interface IState {
   song:StoreState.SongInfo,
-  listInfo:StoreState.ListInfo
+  listInfo:StoreState.ListInfo,
+  currTime:number
 }
 
 const initState:IState = {
@@ -22,7 +23,8 @@ const initState:IState = {
   listInfo: {
     index: 0,
     total: 0
-  }
+  },
+  currTime:0
 }
 
 const mutations:MutationTree<IState> = {
@@ -34,6 +36,9 @@ const mutations:MutationTree<IState> = {
   },
   'SET_LIST_INFO_INDEX' (state:IState, data:number) {
     state.listInfo.index = data
+  },
+  'SET_CURR_TIME' (state:IState, data:number) {
+    state.currTime = data
   }
 }
 export default new Vuex.Store({

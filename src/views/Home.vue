@@ -2,7 +2,7 @@
   <div class="home">
     <side-bar :list-info="listInfo" />
     <play-bar :song="songInfo" :list-info="listInfo" />
-    <lrc-bar :song="songInfo" />
+    <lrc-bar :song="songInfo" :currTime="currTime" />
   </div>
 </template>
 
@@ -20,6 +20,9 @@ export default class Home extends Vue {
   }
   private get listInfo ():StoreState.ListInfo {
     return this.$store.state.listInfo
+  }
+  private get currTime():number {
+    return this.$store.state.currTime
   }
 }
 </script>

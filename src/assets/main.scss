@@ -94,7 +94,7 @@ body {
 
 .songinfo{ width: 600px;height: 100px; background: rgba(225,225,225,0.8); position:absolute;left:50%; margin-left:-300px; top: 30px;}
 .lrcBox{ width: 290px; height: 100px;  background: rgba(99,99,99,0.6); float: right; position: relative; overflow: hidden;}
-.lrcBox ul{ width: 100%; position: absolute; text-align: center;}
+.lrcBox ul{ width: 100%; position: absolute; text-align: center; transition: all .5s;}
 .lrcBox ul li{ font-family: 'Microsoft YaHei'; font-size: 14px; line-height: 25px;color:#ddd;}
 .lrcBox ul .cli { color: #fff; font-size: 16px;}
 .songCover{ width:310px; height: 100px; float: left; display: table;}
