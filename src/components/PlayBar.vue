@@ -56,6 +56,7 @@ export default class playBar extends Vue {
 
     mounted () {
         this.audioObj = this.$refs.playerAudio
+        
         this.audioBindEvent()
     }
     // 给audio绑定一些监听事件
